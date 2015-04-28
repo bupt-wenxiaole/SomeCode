@@ -5,8 +5,8 @@ digits or more
 ****************************************************************/ 
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <stack>
 #include <iostream>
 #include <vector>
@@ -15,8 +15,9 @@ digits or more
 #include <map>
 #include <list>
 #include <algorithm>
-#include <time.h>
-#include <string.h>
+#include <ctime>
+#include <string>
+
 using namespace std;
 
 struct TreeNode
