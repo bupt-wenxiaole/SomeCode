@@ -1,8 +1,8 @@
-/****************************************
-this is version is used for create binary 
-tree which  the input data include double 
+/**************************************************************
+this version is used for testing leetcode's binary problem in
+local environment which  the input data include double 
 digits or more
-*****************************************/ 
+****************************************************************/ 
 
 
 #include <stdio.h>
