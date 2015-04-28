@@ -1,8 +1,10 @@
-/******************************************
+/****************************************
 this is version is used for create binary 
-tree which  the input data only include the
-single-digit number
+tree which  the input data include double 
+digits or more
 *****************************************/ 
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stack>
@@ -14,6 +16,7 @@ single-digit number
 #include <list>
 #include <algorithm>
 #include <time.h>
+#include <string.h>
 using namespace std;
 
 struct TreeNode
@@ -24,12 +27,12 @@ struct TreeNode
 	TreeNode(int val):val(val), left(NULL),right(NULL){} ; 
 };
 
-TreeNode *constructTree(char *dat , int len)
+TreeNode *constructTree(int *dat , int len)
 {
 	TreeNode *root = NULL;
 	int index = 0;
 	if(len > 0)
-		root = new TreeNode(dat[index] - '0');
+		root = new TreeNode(dat[index]);
 	else
 		return NULL;
 
@@ -45,7 +48,7 @@ TreeNode *constructTree(char *dat , int len)
 			{
 				if(dat[index] != '#')
 				{
-					root->left = new TreeNode(dat[index] - '0');	
+					root->left = new TreeNode(dat[index]);	
 					node.push_back(root->left);
 				}
 				index ++;
@@ -54,7 +57,7 @@ TreeNode *constructTree(char *dat , int len)
 			{
 				if(dat[index] != '#')
 				{
-					root->right = new TreeNode(dat[index] - '0');	
+					root->right = new TreeNode(dat[index]);	
 					node.push_back(root->right);
 				}
 				index ++;
@@ -65,8 +68,15 @@ TreeNode *constructTree(char *dat , int len)
 
 	return root;
 }
-//please paste your leetcode binarytree problem's code below 
 
+void traversal(TreeNode *node)
+{
+	if(!node)
+		return;
+	cout <<"\t"<< node->val;
+	traversal(node->left);
+	traversal(node->right);
+}
 class Solution {
 public:
     bool isSymmetric(TreeNode *root) 
@@ -86,38 +96,38 @@ public:
 };
 
 
+
 int main(int argc, char *argv[])
 {
 	if(argc < 2)
 	{
-		cout <<"Usage: ./createTreev1 1223443"<<endl;x
+		cout <<"Usage: ./createTreev 30 50 50 2 3 3 2"<<endl;
 		exit(1);
 	}
 
-	string treeinfo = argv[1];
-	if(treeinfo.size() < 1)
+	int len = argc -1 ;
+	cout << len <<endl;
+
+	int *data = (int *)malloc(sizeof(int) * len);
+	memset(data, 0, sizeof(char)*len);
+	for(int i=1; i<argc; i++)
 	{
-		cout <<"tree data invalid"<<endl;
-		exit(1);
+		if(*argv[i] != '#')
+			data[i-1] = atoi(argv[i]) ;
+		else
+			data[i-1] = '#';
 	}
-	int len = treeinfo.size();
-	char *dat = new char[len];
-	for(int i=0; i<len; i++)
-	{
-		dat[i] = treeinfo[i];	
-	}
-	for(int i=0; i<len; i++)
-		cout << "\t"<<dat[i] ;
+	for(int i=0; i < len ; i++)
+		cout <<"\t"<< data[i] ;
+	cout << endl;
 	cout << endl;
 
-	TreeNode *root = NULL;
-	root = constructTree(dat, len);
+	TreeNode *tree = NULL;
+	tree = constructTree(data, len);
+
+	traversal(tree);
+	cout << endl;
 
 	Solution s;
-	bool result = s.isSymmetric(root);   //modify this line code to keep same with the  function above
-	cout << result;
-	cout << endl;
-	cout << endl;
-
-	delete dat;
+	cout << s.isSymmetric(tree) <<endl;
 }
