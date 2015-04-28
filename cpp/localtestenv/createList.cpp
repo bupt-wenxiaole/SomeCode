@@ -44,6 +44,8 @@ void printList(ListNode *head)
 	}
 
 }
+
+//write your function below
 ListNode * removeNthNodeFromEnd(ListNode *head,int n)
 {
 	if(head == NULL || n == 0)//防御性编程，增加健壮性
@@ -92,6 +94,7 @@ int main()
 	for (int i=0;i<len;i++)
 		addToTail(&root,rand()%100);
 	printList(root);
+	// fill the parameters in your function below
 	ListNode *resultList=removeNthNodeFromEnd(root,4);
 	printList(resultList);
 
