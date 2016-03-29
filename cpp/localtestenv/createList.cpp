@@ -1,3 +1,10 @@
+/***********************
+test the leetcode's 
+linkList problem 
+in the loacal environment
+***********************/
+
+
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
@@ -97,8 +104,6 @@ int main()
 	// fill the parameters in your function below
 	ListNode *resultList=removeNthNodeFromEnd(root,4);
 	printList(resultList);
-
-
 }
 
 
