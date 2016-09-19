@@ -1,8 +1,8 @@
 /**************************************************************
 this version is used for testing leetcode's binary problem in
-local environment which  the input data include double 
+local environment which  the input data include double
 digits or more
-****************************************************************/ 
+****************************************************************/
 
 
 #include <cstdio>
@@ -16,119 +16,117 @@ digits or more
 #include <list>
 #include <algorithm>
 #include <ctime>
+#include <cstring>
 #include <string>
 
 using namespace std;
 
 struct TreeNode
 {
-	int	val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode(int val):val(val), left(NULL),right(NULL){} ; 
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int val): val(val), left(NULL), right(NULL) {} ;
 };
 
 TreeNode *constructTree(int *dat , int len)
 {
-	TreeNode *root = NULL;
-	int index = 0;
-	if(len > 0)
-		root = new TreeNode(dat[index]);
-	else
-		return NULL;
+    TreeNode *root = NULL;
+    int index = 0;
+    if (len > 0)
+        root = new TreeNode(dat[index]);
+    else
+        return NULL;
 
-	list<TreeNode *> node;
-	node.push_back(root);
-	index ++;
-	while(index < len)
-	{
-		if(!node.empty())
-		{
-			TreeNode *root = node.front();
-			if(index < len )
-			{
-				if(dat[index] != '#')
-				{
-					root->left = new TreeNode(dat[index]);	
-					node.push_back(root->left);
-				}
-				index ++;
-			}
-			if(index < len )
-			{
-				if(dat[index] != '#')
-				{
-					root->right = new TreeNode(dat[index]);	
-					node.push_back(root->right);
-				}
-				index ++;
-			}
-			node.pop_front();
-		}
-	}
+    list<TreeNode *> node;
+    node.push_back(root);
+    index ++;
+    while (index < len)
+    {
+        if (!node.empty())
+        {
+            TreeNode *root = node.front();
+            if (index < len )
+            {
+                if (dat[index] != 0)
+                {
+                    root->left = new TreeNode(dat[index]);
+                    node.push_back(root->left);
+                }
+                index ++;
+            }
+            if (index < len )
+            {
+                if (dat[index] != 0)
+                {
+                    root->right = new TreeNode(dat[index]);
+                    node.push_back(root->right);
+                }
+                index ++;
+            }
+            node.pop_front();
+        }
+    }
 
-	return root;
+    return root;
 }
 
-void traversal(TreeNode *node)
+void traversal(TreeNode *node, int len, int &count)
 {
-	if(!node)
-		return;
-	cout <<"\t"<< node->val;
-	traversal(node->left);
-	traversal(node->right);
+    if (!node)
+        return;
+    count++;
+    traversal(node->left, len, count);
+    if (count != len)
+        cout << node->val << " ";
+    else
+        cout << node->val;
+    traversal(node->right, len, count);
 }
 class Solution {
 public:
-    bool isSymmetric(TreeNode *root) 
-    {
-        if ((root==NULL) || (root->left==NULL && root->right==NULL))
-            return true;
-        return dfs(root->left,root->right);
-    }
-    bool dfs(TreeNode *left,TreeNode *right)
-    {
-        if (left==NULL && right==NULL)
-            return true;
-        if ((left==NULL) || (right==NULL) || (left->val != right->val))
-            return false;
-        return dfs(left->left,right->right) && dfs(left->right,right->left);
+    int maxDepth(TreeNode* root) {
+        if (root == NULL)
+            return 0;
+        int left = maxDepth(root -> left);
+        int right = maxDepth(root -> right);
+        return left > right ? left + 1 : right + 1;
+
     }
 };
 
 
-
 int main(int argc, char *argv[])
 {
-	if(argc < 2)
-	{
-		cout <<"Usage: ./createTreev 30 50 50 2 3 3 2"<<endl;
-		exit(1);
-	}
+    int T;
+    cin >> T;
+    while (T--)
+    {
 
-	int len = argc -1 ;
-	cout << len <<endl;
+        vector<int> data;
+        while (1)
+        {
+            int temp;
+            cin >> temp;
+            data.push_back(temp);
+            if (temp == -1)
+                break;
+        }
+        int *data_a = (int *)malloc(sizeof(int) * (data.size() - 1));
+        memset(data_a, 0, sizeof(char) * (data.size() - 1));
+        for (int i = 0; i < data.size() - 1; i++)
+            data_a[i] = data[i];
+        TreeNode *tree = NULL;
+        tree = constructTree(data_a, data.size() - 1);
+        Solution s;
+        cout << s.maxDepth(tree) << " ";
+        int count = 0;
+        traversal(tree, data.size() - 1, count);
+        cout << endl;
 
-	int *data = (int *)malloc(sizeof(int) * len);
-	memset(data, 0, sizeof(char)*len);
-	for(int i=1; i<argc; i++)
-	{
-		if(*argv[i] != '#')
-			data[i-1] = atoi(argv[i]) ;
-		else
-			data[i-1] = '#';
-	}
-	for(int i=0; i < len ; i++)
-		cout <<"\t"<< data[i] ;
-	cout << endl;
-	cout << endl;
 
-	TreeNode *tree = NULL;
-	tree = constructTree(data, len);
+    }
 
-	traversal(tree);
-	cout << endl;
+    return 0;
 
-	Solution s;
-	cout << s.isSymmetric(tree) <<endl;
 }
