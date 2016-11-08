@@ -16,7 +16,7 @@ void print2nd(const C& container)
 template<typename IterT>
 void workWithIterator(IterT iter)
 {
-    typedef typename iterator_traits<IterT>::value_type value_type; 
+    typedef typename iterator_traits<IterT>::value_type value_type;//注意这里 
     value_type temp(*iter);
     cout << temp << endl;
 }
