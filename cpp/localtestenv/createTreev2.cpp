@@ -71,62 +71,44 @@ TreeNode *constructTree(int *dat , int len)
     return root;
 }
 
-void traversal(TreeNode *node, int len, int &count)
-{
-    if (!node)
-        return;
-    count++;
-    traversal(node->left, len, count);
-    if (count != len)
-        cout << node->val << " ";
-    else
-        cout << node->val;
-    traversal(node->right, len, count);
-}
 class Solution {
 public:
-    int maxDepth(TreeNode* root) {
-        if (root == NULL)
-            return 0;
-        int left = maxDepth(root -> left);
-        int right = maxDepth(root -> right);
-        return left > right ? left + 1 : right + 1;
-
+    void helper(TreeNode* t1, TreeNode* t2, TreeNode** child) {
+        *child = NULL;
+        if(t1 == NULL && t2 == NULL)
+            return;
+        if(t1 == NULL && t2 != NULL) {
+            cout << t2 -> val << endl;
+            t1 = new TreeNode(t2 -> val);
+            *child = t1; //保存这个孩子
+            return;
+        }
+        if(t1 != NULL && t2 == NULL) 
+            return;
+        if(t1 != NULL && t2 != NULL)
+            t1 -> val += t2 -> val;
+        helper(t1 -> left, t2 -> left, child);
+        if(*child != NULL)
+            t1 -> left = *child;
+        helper(t1 -> right, t2 -> right, child);
+        if(*child != NULL)
+            t1 -> right = *child;
+    }
+    TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
+        TreeNode* c = NULL;
+        helper(t1, t2, &c);
+        return t1;
     }
 };
 
-
 int main(int argc, char *argv[])
 {
-    int T;
-    cin >> T;
-    while (T--)
-    {
-
-        vector<int> data;
-        while (1)
-        {
-            int temp;
-            cin >> temp;
-            data.push_back(temp);
-            if (temp == -1)
-                break;
-        }
-        int *data_a = (int *)malloc(sizeof(int) * (data.size() - 1));
-        memset(data_a, 0, sizeof(char) * (data.size() - 1));
-        for (int i = 0; i < data.size() - 1; i++)
-            data_a[i] = data[i];
-        TreeNode *tree = NULL;
-        tree = constructTree(data_a, data.size() - 1);
-        Solution s;
-        cout << s.maxDepth(tree) << " ";
-        int count = 0;
-        traversal(tree, data.size() - 1, count);
-        cout << endl;
-
-
-    }
-
+    int data_a[] = {1, 3, 2, 5};
+    int data_b[] = {2, 1, 3, 0, 4, 0, 7};
+    TreeNode* tree1 = constructTree(data_a, sizeof(data_a)/sizeof(data_a[0]));
+    TreeNode* tree2 = constructTree(data_b, sizeof(data_b)/sizeof(data_b[0]));
+    Solution s;
+    TreeNode* result = s.mergeTrees(tree1, tree2);
     return 0;
 
 }
